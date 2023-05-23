@@ -72,7 +72,10 @@ async function handleClickDeleteButton(bookId) {
     // }
 
     //panggil function deleteBook dengan parameter bookId
-    deleteBook(bookId);
+    // deleteBook(bookId);
+    await fetch (`http://localhost:3333/books/${bookId}`, {
+      method : "DELETE",
+    });
     loadPage();
   } catch (error) {
     console.log(error);
@@ -198,7 +201,8 @@ function generateRows(books) {
       simpan row yang dibuat ke variabel rows
     */
 
-    rows = books.map((book) => 
+    rows = books
+    .map((book) => 
       `<tr class="book-item">
       <td class="px-6 py-4 border-b">${book.title}</td>
       <td class="px-6 py-4 border-b">${book.author}</td>
@@ -323,10 +327,10 @@ async function editBook(book) {
       ubah buku yang ada di http://localhost:3333/books/:id dengan method PUT
       body yang dikirim adalah book yang dikirimkan sebagai parameter function
     */
-    const response = await fetch(`http://localhost:3333/books/${bookId}`, {
-      method: 'PUT',
+    const response = await fetch(`http://localhost:3333/books/${book.id}`, {
+      method : "PUT",
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify(book)
     });
@@ -335,7 +339,6 @@ async function editBook(book) {
     if(index !== -1){
       books[index] = editBooks;
     } 
-
     if (response.status != 200){
       console.log("Buku gagal dirubah")
     }
